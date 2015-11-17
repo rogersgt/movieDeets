@@ -1,0 +1,29 @@
+{
+  "name": "moviedeets",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "bundle": "./node_modules/.bin/browserify js/main.js -o js/bundle.js",
+    "watch": "./node_modules/.bin/watchify js/main.js -o js/bundle.js & ./node_modules/.bin/node-sass styles/master.scss styles/styles.css",
+    "serve": "./node_modules/.bin/serve",
+    "start": "npm run watch & npm run serve",
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rogersgt/movieDeets.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/rogersgt/movieDeets/issues"
+  },
+  "homepage": "https://github.com/rogersgt/movieDeets#readme",
+  "devDependencies": {
+    "backbone": "^1.2.3",
+    "browserify": "^12.0.1",
+    "jquery": "^2.1.4",
+    "underscore": "^1.8.3",
+    "watchify": "^3.6.1"
+  }
+}
