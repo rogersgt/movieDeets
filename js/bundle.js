@@ -41,7 +41,7 @@ module.exports = Backbone.View.extend({
     _.each(this.collection.models, this.addEach, this);
   },
   onReset: function() {
-    
+
   },
   initialize: function() {
     this.addAll();
