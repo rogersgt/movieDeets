@@ -1,0 +1,95 @@
+body {
+  font-family: "Ruda";
+  padding: 0;
+  margin: 0; }
+
+button:focus {
+  outline: 0; }
+
+input:focus {
+  outline: 0; }
+
+h1 {
+  text-align: center;
+  font-size: 4em;
+  color: white;
+  background: linear-gradient(to right, white, white, #752733, #752733, #752733, white, white);
+  text-shadow: 4px 4px 10px #939393;
+  margin: 2% 0 0 0; }
+
+#addMovie {
+  background-color: gray; }
+  #addMovie ul {
+    margin: 0 0 0 16%; }
+    #addMovie ul li {
+      display: inline-block;
+      margin: 2% 1%; }
+      #addMovie ul li input {
+        border: none;
+        padding: 2%;
+        font-size: 1em;
+        margin: 1%; }
+
+nav ul li {
+  display: inline-block;
+  margin: 0 1%; }
+  nav ul li:nth-child(4) {
+    float: right; }
+
+.addMov {
+  width: 100%;
+  border: none;
+  background-color: #2ef7d6;
+  color: white;
+  font-size: 1em;
+  transition-duration: 1s; }
+  .addMov:hover {
+    width: 130%;
+    font-size: 1.3em; }
+
+.reset {
+  border: none;
+  background-color: #752733;
+  color: white;
+  font-size: 1em;
+  transition-duration: 1s; }
+  .reset:hover {
+    width: 105%;
+    font-size: 1.3em; }
+
+.delete {
+  width: 96.5%;
+  margin: 1% 2%;
+  border: none;
+  background-color: #752733;
+  color: white;
+  font-size: 1em;
+  transition-duration: .5s; }
+  .delete:hover {
+    background-color: #611f1f;
+    font-size: 1.2em; }
+
+.filter, .home, .login {
+  text-decoration: none;
+  font-size: 1em;
+  transition-duration: 1s;
+  color: black; }
+  .filter:hover, .home:hover, .login:hover {
+    color: #939393;
+    text-shadow: 2px 2px 8px #f02c2c;
+    font-size: 1.2em;
+    margin-right: 5%; }
+
+hr {
+  width: 64%; }
+
+.movie {
+  margin: 5% 30%;
+  background-color: #939393;
+  border-radius: .3em;
+  border: 5px solid #752733; }
+
+img {
+  width: 30em;
+  margin-left: 2%;
+  border: 2px solid black; }

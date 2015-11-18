@@ -1,1 +1,111 @@
 @import "variables.scss";
+
+body {
+  font-family: "Ruda";
+  padding: 0;
+  margin: 0;
+}
+button:focus{
+  outline: 0;
+}
+input:focus{
+  outline: 0;
+}
+h1 {
+  text-align: center;
+  font-size: 4em;
+  color: white;
+  background: linear-gradient(to right, white, white, $resetRed, $resetRed, $resetRed, white, white);
+  text-shadow: 4px 4px 10px $steel;
+  margin: 2% 0 0 0;
+}
+#addMovie {
+  background-color: gray;
+  ul {
+    margin: 0 0 0 16%;;
+    li {
+      display: inline-block;
+      margin: 2% 1%;
+      input {
+        border: none;
+        padding: 2%;
+        font-size: 1em;
+        margin: 1%;
+      }
+    }
+  }
+}
+nav {
+  ul {
+    li {
+      display: inline-block;
+      margin: 0 1%;
+      &:nth-child(4) {
+        float: right;
+      }
+    }
+  }
+}
+.addMov {
+  width: 100%;
+  border: none;
+  background-color: $addGreen;
+  color: white;
+  font-size: 1em;
+  transition-duration: 1s;
+  &:hover {
+    width: 130%;
+    font-size: 1.3em;
+  }
+}
+.reset {
+  border: none;
+  background-color: $resetRed;
+  color: white;
+  font-size: 1em;
+  transition-duration: 1s;
+  &:hover {
+    width: 105%;
+    font-size: 1.3em;
+  }
+}
+.delete {
+  width: 96.5%;
+  margin: 1% 2%;
+  border: none;
+  background-color: $resetRed;
+  color: white;
+  font-size: 1em;
+  transition-duration: .5s;
+  &:hover {
+    background-color: $darkerRed;
+    font-size: 1.2em;
+  }
+}
+.filter, .home, .login{
+  text-decoration: none;
+  font-size: 1em;
+  transition-duration: 1s;
+  color: black;
+  &:hover {
+    color: $steel;
+    text-shadow: 2px 2px 8px $highlight;
+    font-size: 1.2em;
+    margin-right: 5%;
+  }
+}
+hr {
+  width: 64%;
+}
+//////////////////////////////////////// Movie List //////////////////////////////////////
+.movie {
+  margin: 5% 30%;
+  background-color: $steel;
+  border-radius: .3em;
+  border: 5px solid $resetRed;
+  }
+  img {
+    width: 30em;
+    margin-left: 2%;
+    border: 2px solid black;
+}
