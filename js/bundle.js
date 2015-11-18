@@ -15,19 +15,22 @@ module.exports = Backbone.View.extend({
   },
   onAddMovie: function(event) {
     event.preventDefault();
-    var newMov = {
-            title: $('#movTitle').val() || 'A Bill Murray Movie',
-            year: $('#movYear').val() || 'Every year',
-            picture: $('#movBanner').val() || 'http://www.fillmurray.com/g/155/300'
-          };
-    var newModel = new MovieModel(newMov);
-    newModel.save();
-    this.collection.add(newModel);
-    this.addOne(newModel);
+      var self = this;
+      var newMov = {
+              title: $('#movTitle').val() || 'A Bill Murray Movie',
+              year: $('#movYear').val() || 'Every year',
+              picture: $('#movBanner').val() || 'http://www.fillmurray.com/g/155/300'
+            };
+      var newModel = new MovieModel(newMov);
+      newModel.save().then(function () {
+        self.collection.add(newModel);
+        self.addOne(newModel);
+      })
 
-    $('#movTitle').val("");
-    $('#movYear').val("");
-    $('#movBanner').val("");
+
+      $('#movTitle').val("");
+      $('#movYear').val("");
+      $('#movBanner').val("");
   },
   addOne: function(movieModel) {
     var movieView = new MovieView({model: movieModel});
@@ -79,6 +82,7 @@ module.exports = Backbone.Model.extend({
 var Backbone = require('backbone');
 var $ = require('jquery');
 var _ = require('underscore');
+var MovieCollection = require('./ItemCollection');
 var MovieModel = require('./ItemModel');
 Backbone.$ = $;
 
@@ -87,10 +91,15 @@ module.exports = Backbone.View.extend({
   className: 'movie',
   template: _.template($('#movTemplate').html()),
   events: {
-    'click span': 'onSpanClick'
+    'click .delete': 'onDelete'
   },
-  onSpanClick: function() {
-
+  onDelete: function() {
+    var tag = this.$el.parent('div').context.firstElementChild.attributes[0].nodeValue;
+    var movieCollection = new MovieCollection({
+      url: 'https://tiny-tiny.herokuapp.com/collections/moviedeets',
+      model: MovieModel
+    });
+    console.log(movieCollection);
   },
   render: function() {
     var markup = this.template(this.model.toJSON());
@@ -102,7 +111,7 @@ module.exports = Backbone.View.extend({
   }
 });
 
-},{"./ItemModel":3,"backbone":6,"jquery":7,"underscore":8}],5:[function(require,module,exports){
+},{"./ItemCollection":2,"./ItemModel":3,"backbone":6,"jquery":7,"underscore":8}],5:[function(require,module,exports){
 var $ = require('jquery');
 var _ = require('underscore');
 var MovieCollection = require('./ItemCollection');

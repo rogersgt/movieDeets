@@ -14,19 +14,22 @@ module.exports = Backbone.View.extend({
   },
   onAddMovie: function(event) {
     event.preventDefault();
-    var newMov = {
-            title: $('#movTitle').val() || 'A Bill Murray Movie',
-            year: $('#movYear').val() || 'Every year',
-            picture: $('#movBanner').val() || 'http://www.fillmurray.com/g/155/300'
-          };
-    var newModel = new MovieModel(newMov);
-    newModel.save();
-    this.collection.add(newModel);
-    this.addOne(newModel);
+      var self = this;
+      var newMov = {
+              title: $('#movTitle').val() || 'A Bill Murray Movie',
+              year: $('#movYear').val() || 'Every year',
+              picture: $('#movBanner').val() || 'http://www.fillmurray.com/g/155/300'
+            };
+      var newModel = new MovieModel(newMov);
+      newModel.save().then(function () {
+        self.collection.add(newModel);
+        self.addOne(newModel);
+      })
 
-    $('#movTitle').val("");
-    $('#movYear').val("");
-    $('#movBanner').val("");
+
+      $('#movTitle').val("");
+      $('#movYear').val("");
+      $('#movBanner').val("");
   },
   addOne: function(movieModel) {
     var movieView = new MovieView({model: movieModel});
