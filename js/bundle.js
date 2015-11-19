@@ -243,7 +243,7 @@ module.exports = {
     "</ul>"
   ].join(""),
   form: [
-    "<ul>",
+    "<ul class='submitForm'>",
       "<li><input type='text' id='movTitle' placeholder='Enter movie title'></li>",
       "<li><input type='text' id='movYear' placeholder='Enter movie year'></li>",
       "<li><input type='text' id='movBanner' placeholder='Enter movie banner url'></li>",

@@ -17,18 +17,19 @@ h1 {
   text-shadow: 4px 4px 10px #939393;
   margin: 2% 0 0 0; }
 
-#addMovie {
-  background-color: gray; }
-  #addMovie ul {
-    margin: 0 0 0 16%; }
-    #addMovie ul li {
-      display: inline-block;
-      margin: 2% 1%; }
-      #addMovie ul li input {
-        border: none;
-        padding: 2%;
-        font-size: 1em;
-        margin: 1%; }
+#addMovie ul {
+  background-color: gray;
+  margin: 0; }
+  #addMovie ul li {
+    display: inline-block;
+    margin: 2% 1%; }
+    #addMovie ul li:nth-child(1) {
+      margin-left: 20%; }
+    #addMovie ul li input {
+      border: none;
+      padding: 2%;
+      font-size: 1em;
+      margin: 1%; }
 
 nav ul li {
   display: inline-block;
