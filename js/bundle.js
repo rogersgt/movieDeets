@@ -6,6 +6,7 @@ Backbone.$ = $;
 var MovieModel = require('./ItemModel');
 var MovieCollection = require('./ItemCollection');
 var MovieView = require('./ModelView');
+var Template = require('./templates');
 
 module.exports = Backbone.View.extend({
   el: '#addMovie',
@@ -17,16 +18,15 @@ module.exports = Backbone.View.extend({
     event.preventDefault();
       var self = this;
       var newMov = {
-              title: $('#movTitle').val() || 'A Bill Murray Movie',
-              year: $('#movYear').val() || 'Every year',
-              picture: $('#movBanner').val() || 'http://www.fillmurray.com/g/155/300'
+              title: this.$('#movTitle').val() || 'A Bill Murray Movie',
+              year: this.$('#movYear').val() || 'Every year',
+              picture: this.$('#movBanner').val() || 'http://www.fillmurray.com/g/155/300'
             };
       var newModel = new MovieModel(newMov);
       newModel.save().then(function () {
         self.collection.add(newModel);
         self.addOne(newModel);
-      })
-
+      });
 
       $('#movTitle').val("");
       $('#movYear').val("");
@@ -44,24 +44,27 @@ module.exports = Backbone.View.extend({
     _.each(this.collection.models, this.addEach, this);
   },
   onReset: function() {
-
+    //this.collection.reset();
   },
   initialize: function() {
     this.addAll();
   }
 });
 
-},{"./ItemCollection":2,"./ItemModel":3,"./ModelView":4,"backbone":6,"jquery":7,"underscore":8}],2:[function(require,module,exports){
+},{"./ItemCollection":2,"./ItemModel":3,"./ModelView":4,"./templates":9,"backbone":10,"jquery":11,"underscore":12}],2:[function(require,module,exports){
 var Backbone = require('backbone');
 var _ = require('underscore');
 var MovieModel = require('./ItemModel');
 
 module.exports = Backbone.Collection.extend({
   url: 'https://tiny-tiny.herokuapp.com/collections/moviedeets',
-  model: MovieModel
+  model: MovieModel,
+  initialize: function() {
+    
+  }
 });
 
-},{"./ItemModel":3,"backbone":6,"underscore":8}],3:[function(require,module,exports){
+},{"./ItemModel":3,"backbone":10,"underscore":12}],3:[function(require,module,exports){
 var Backbone = require('backbone');
 var $ = require('jquery');
 var _ = require('underscore');
@@ -69,19 +72,22 @@ var _ = require('underscore');
 module.exports = Backbone.Model.extend({
   urlRoot: 'https://tiny-tiny.herokuapp.com/collections/moviedeets',
   idAttribute: '_id',
-  defaults: {
-    picture: 'http://www.fillmurray.com/g/155/300',
-    title: 'A Bill Murray Movie'
+  defaults: function() {
+    return {
+       picture: 'http://www.fillmurray.com/g/155/300',
+       title: 'A Bill Murray Movie'
+     }
   },
   initialize: function() {
 
   }
 });
 
-},{"backbone":6,"jquery":7,"underscore":8}],4:[function(require,module,exports){
+},{"backbone":10,"jquery":11,"underscore":12}],4:[function(require,module,exports){
 var Backbone = require('backbone');
 var $ = require('jquery');
 var _ = require('underscore');
+var tmpl = require('./templates.js');
 var MovieCollection = require('./ItemCollection');
 var MovieModel = require('./ItemModel');
 Backbone.$ = $;
@@ -89,17 +95,40 @@ Backbone.$ = $;
 module.exports = Backbone.View.extend({
   tagName: 'article',
   className: 'movie',
-  template: _.template($('#movTemplate').html()),
+  template: _.template(tmpl.mov),
   events: {
-    'click .delete': 'onDelete'
+    'click .delete': 'onDelete',
+    'dblclick h2': 'onEdit',
+    'dblclick h4': 'onEdit',
+    'keypress h2': 'onUpdate',
+    'keypress h4': 'onUpdate'
   },
   onDelete: function() {
-    var tag = this.$el.parent('div').context.firstElementChild.attributes[0].nodeValue;
-    var movieCollection = new MovieCollection({
-      url: 'https://tiny-tiny.herokuapp.com/collections/moviedeets',
-      model: MovieModel
-    });
-    console.log(movieCollection);
+    this.model.destroy();
+    this.remove();
+    //this.fadOut("slow");
+  },
+  onEdit: function() {
+    var name = this.$el.find('h2');
+    var year = this.$el.find('h4');
+    name.attr('contenteditable', true).css('outline', '0').css('background-color', 'white');
+    year.attr('contenteditable', true).css('outline', '0').css('background-color', 'white');
+  },
+  onUpdate: function(e) {
+    if (e.charCode === 13) {
+      var name = this.$el.find('h2');
+      var year = this.$el.find('h4');
+      name.attr('contenteditable', false).css('background-color', '#939393');
+      year.attr('contenteditable', false).css('background-color', '#939393');
+
+      var updateModel = new MovieModel({
+              _id: this.$el.find('div').attr('id'),
+              title: this.$el.find('h2')[0].innerText,
+              year: this.$el.find('h4')[0].innerText,
+              picture: this.$el.find('img').attr('src')
+            });
+      updateModel.save();
+    }
   },
   render: function() {
     var markup = this.template(this.model.toJSON());
@@ -111,22 +140,123 @@ module.exports = Backbone.View.extend({
   }
 });
 
-},{"./ItemCollection":2,"./ItemModel":3,"backbone":6,"jquery":7,"underscore":8}],5:[function(require,module,exports){
+},{"./ItemCollection":2,"./ItemModel":3,"./templates.js":9,"backbone":10,"jquery":11,"underscore":12}],5:[function(require,module,exports){
+var Backbone = require('backbone');
 var $ = require('jquery');
 var _ = require('underscore');
-var MovieCollection = require('./ItemCollection');
-var MovieCollectionView = require('./CollectionView');
+var tmpl = require('./templates');
 
-$(function() {
-  var movies = new MovieCollection();
-
-  movies.fetch().then(function(data) {
-    new MovieCollectionView({collection: movies});
-  });
-
+module.exports = Backbone.View.extend({
+  initialize: function() {},
+  template: _.template(tmpl.form),
+  render: function() {
+    var markup = this.template({});
+    this.$el.html(markup);
+    return this;
+  }
 });
 
-},{"./CollectionView":1,"./ItemCollection":2,"jquery":7,"underscore":8}],6:[function(require,module,exports){
+},{"./templates":9,"backbone":10,"jquery":11,"underscore":12}],6:[function(require,module,exports){
+var Backbone = require('backbone');
+var $ = require('jquery');
+var _ = require('underscore');
+var tmpl = require('./templates');
+
+module.exports = Backbone.View.extend({
+  initialize: function() {},
+  template: _.template(tmpl.header),
+  render: function() {
+    var markup = this.template({});
+    this.$el.html(markup);
+    return this;
+  }
+});
+
+},{"./templates":9,"backbone":10,"jquery":11,"underscore":12}],7:[function(require,module,exports){
+var Backbone = require('backbone');
+var $ = require('jquery');
+Backbone.$ = $;
+var _ = require('underscore');
+var HeaderView = require('./headerView');
+var MovieModel = require('./ItemModel');
+var MovieCollection = require('./ItemCollection');
+var MovieView = require('./ModelView');
+var CollectionView = require('./CollectionView');
+var FormView = require('./form');
+
+module.exports = Backbone.View.extend({
+  el: '#layoutView',
+  initialize: function() {
+    var movieCollection = new MovieCollection();
+
+    var self = this;
+    var headerHTML = new HeaderView();
+    var formHTML = new FormView();
+
+    movieCollection.fetch().then(function() {
+      var collectionView = new CollectionView({collection: movieCollection});
+
+      self.$el.find('nav').html(headerHTML.render().el);
+      self.$el.find('#addMovie').html(formHTML.render().el);
+
+    });
+  }
+});
+
+},{"./CollectionView":1,"./ItemCollection":2,"./ItemModel":3,"./ModelView":4,"./form":5,"./headerView":6,"backbone":10,"jquery":11,"underscore":12}],8:[function(require,module,exports){
+// var $ = require('jquery');
+// var _ = require('underscore');
+// var MovieCollection = require('./ItemCollection');
+// var MovieCollectionView = require('./CollectionView');
+//
+// $(function() {
+//   var movies = new MovieCollection();
+//
+//   movies.fetch().then(function(data) {
+//     new MovieCollectionView({collection: movies});
+//   });
+//
+// });
+
+var $ = require('jquery');
+var layoutView = require('./layoutView');
+
+$(function () {
+  new layoutView();
+});
+
+},{"./layoutView":7,"jquery":11}],9:[function(require,module,exports){
+module.exports = {
+  mov: [
+    "<div id='<%= _id %>'>",
+           "<center><h2><%= title %></h2><h4><%= year %></h4></center>",
+           "<img src='<%= picture %>' />",
+           "<button class='delete'>Delete</button>",
+        "</div>"
+  ].join(""),
+  header: [
+    "<ul>",
+      "<li><a href='' class='home'>Home</a></li>",
+      "<li><a href='' class='filter'>Filter</a></li>",
+      "<li><a href='' class='login'>Login</a></li>",
+      "<li><button class='reset'>Reset</button></li>",
+    "</ul>"
+  ].join(""),
+  form: [
+    "<ul>",
+      "<li><input type='text' id='movTitle' placeholder='Enter movie title'></li>",
+      "<li><input type='text' id='movYear' placeholder='Enter movie year'></li>",
+      "<li><input type='text' id='movBanner' placeholder='Enter movie banner url'></li>",
+      "<li><button type='button' class='addMov'>Add Movie</button></li>",
+    "</ul>",
+    "<section id='banner'>",
+      "<h1>Movie Deets</h1>",
+      "<hr>",
+    "</section>"
+  ].join("")
+}
+
+},{}],10:[function(require,module,exports){
 (function (global){
 //     Backbone.js 1.2.3
 
@@ -2024,7 +2154,7 @@ $(function() {
 }));
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"jquery":7,"underscore":8}],7:[function(require,module,exports){
+},{"jquery":11,"underscore":12}],11:[function(require,module,exports){
 /*!
  * jQuery JavaScript Library v2.1.4
  * http://jquery.com/
@@ -11236,7 +11366,7 @@ return jQuery;
 
 }));
 
-},{}],8:[function(require,module,exports){
+},{}],12:[function(require,module,exports){
 //     Underscore.js 1.8.3
 //     http://underscorejs.org
 //     (c) 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
@@ -12786,4 +12916,4 @@ return jQuery;
   }
 }.call(this));
 
-},{}]},{},[5]);
+},{}]},{},[8]);

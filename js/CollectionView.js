@@ -5,6 +5,7 @@ Backbone.$ = $;
 var MovieModel = require('./ItemModel');
 var MovieCollection = require('./ItemCollection');
 var MovieView = require('./ModelView');
+var Template = require('./templates');
 
 module.exports = Backbone.View.extend({
   el: '#addMovie',
@@ -16,16 +17,15 @@ module.exports = Backbone.View.extend({
     event.preventDefault();
       var self = this;
       var newMov = {
-              title: $('#movTitle').val() || 'A Bill Murray Movie',
-              year: $('#movYear').val() || 'Every year',
-              picture: $('#movBanner').val() || 'http://www.fillmurray.com/g/155/300'
+              title: this.$('#movTitle').val() || 'A Bill Murray Movie',
+              year: this.$('#movYear').val() || 'Every year',
+              picture: this.$('#movBanner').val() || 'http://www.fillmurray.com/g/155/300'
             };
       var newModel = new MovieModel(newMov);
       newModel.save().then(function () {
         self.collection.add(newModel);
         self.addOne(newModel);
-      })
-
+      });
 
       $('#movTitle').val("");
       $('#movYear').val("");
@@ -43,7 +43,7 @@ module.exports = Backbone.View.extend({
     _.each(this.collection.models, this.addEach, this);
   },
   onReset: function() {
-
+    //this.collection.reset();
   },
   initialize: function() {
     this.addAll();

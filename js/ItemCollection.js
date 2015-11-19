@@ -4,5 +4,8 @@ var MovieModel = require('./ItemModel');
 
 module.exports = Backbone.Collection.extend({
   url: 'https://tiny-tiny.herokuapp.com/collections/moviedeets',
-  model: MovieModel
+  model: MovieModel,
+  initialize: function() {
+    
+  }
 });

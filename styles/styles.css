@@ -83,6 +83,9 @@ nav ul li {
 hr {
   width: 64%; }
 
+#banner {
+  background-color: white; }
+
 .movie {
   margin: 5% 30%;
   background-color: #939393;
